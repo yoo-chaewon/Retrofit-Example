@@ -11,8 +11,9 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import androidx.core.app.ActivityCompat
+import com.example.weatherapp.Core.NetworkCore
+import com.example.weatherapp.Core.WeatherAPI
 import com.example.weatherapp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
@@ -35,9 +36,11 @@ class MainActivity : AppCompatActivity() {
         getCurrentLoc()
 
 
+    }
 
-
-
+    fun getWeather(){
+        NetworkCore.getNetworkCore<WeatherAPI>()
+            .getCurrentWeatherData(latitude.toString(), longtitude.toString(), WEATHER_API_KEY)
 
     }
 
@@ -65,8 +68,6 @@ class MainActivity : AppCompatActivity() {
                 currentLocation = currentLocation.substring(11)
             }
         }
-        tv_test.text = latitude.toString()
-
     }
 
     private fun getLatLng(): Location {
@@ -75,7 +76,6 @@ class MainActivity : AppCompatActivity() {
             && ActivityCompat.checkSelfPermission(applicationContext, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), this.REQUEST_CODE_LOCATION)
             getLatLng()
-
         }else{
             val locationProvider = LocationManager.GPS_PROVIDER
             currentLatLng = locationManager?.getLastKnownLocation(locationProvider)

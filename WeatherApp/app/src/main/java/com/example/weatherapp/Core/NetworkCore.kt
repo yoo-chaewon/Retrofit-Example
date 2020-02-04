@@ -12,13 +12,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 // init 키워드 , object 키워드, 빌더 패턴, 레트로핏 생성 방법
 object NetworkCore {
     val api: Retrofit
-    val BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
+    val BASE_URL = "http://api.openweathermap.org"
     //`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=${API_KEY}&units=metric`
 
     init {
         var okHttpClient = OkHttpClient()
             .newBuilder()
-            .addInterceptor(AuthInterceptor())
             .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
             .build()
 
@@ -31,11 +30,4 @@ object NetworkCore {
     }
 
     inline fun <reified T> getNetworkCore()  = api.create(T::class.java)
-}
-
-class AuthInterceptor : Interceptor{
-    override fun intercept(chain: Interceptor.Chain): Response {
-        var request = chain.request().newBuilder().addHeader("Authorization", "1").build()
-        return chain.proceed(request)
-    }
 }

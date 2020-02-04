@@ -1,11 +1,9 @@
 package com.example.weatherapp.Core
 
+import com.example.weatherapp.Data.Weather
 import io.reactivex.Completable
 import io.reactivex.Single
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 
 interface WeatherAPI {
@@ -32,4 +30,15 @@ interface WeatherAPI {
 //    fun getMain(
 //        @Header("Authorization") authorization: String
 //    ) : Single<MainResponse>
+
+
+    //http://api.openweathermap.org/data/2.5/weather?lat=37&lon=126&APPID=92d535574f86e3834d553e34e15e9dba&units=metric
+    @GET("/data/2.5/weather?/units=metric&")
+    fun getCurrentWeatherData(
+        @Query("lat") lat: String,
+        @Query("lon") lon: String,
+        @Query("APPID") app_id: String
+    )
+
+
 }
