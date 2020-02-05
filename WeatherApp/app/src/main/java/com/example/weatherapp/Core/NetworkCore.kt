@@ -9,11 +9,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-// init 키워드 , object 키워드, 빌더 패턴, 레트로핏 생성 방법
 object NetworkCore {
     val api: Retrofit
-    val BASE_URL = "http://api.openweathermap.org"
-    //`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=${API_KEY}&units=metric`
+    val BASE_URL = "https://apis.openapi.sk.com"
 
     init {
         var okHttpClient = OkHttpClient()
@@ -28,6 +26,6 @@ object NetworkCore {
             .client(okHttpClient)
             .build()
     }
-
     inline fun <reified T> getNetworkCore()  = api.create(T::class.java)
 }
+

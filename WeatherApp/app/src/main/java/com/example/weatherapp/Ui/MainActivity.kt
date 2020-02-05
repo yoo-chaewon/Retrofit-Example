@@ -15,13 +15,13 @@ import androidx.core.app.ActivityCompat
 import com.example.weatherapp.Core.NetworkCore
 import com.example.weatherapp.Core.WeatherAPI
 import com.example.weatherapp.R
-import kotlinx.android.synthetic.main.activity_main.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    var WEATHER_API_KEY = "92d535574f86e3834d553e34e15e9dba"
     var locationManager: LocationManager? = null
     private val REQUEST_CODE_LOCATION: Int = 2
     var currentLocation: String = ""
@@ -34,13 +34,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         getCurrentLoc()
+        getWeather()
 
 
     }
 
     fun getWeather(){
         NetworkCore.getNetworkCore<WeatherAPI>()
-            .getCurrentWeatherData(latitude.toString(), longtitude.toString(), WEATHER_API_KEY)
+            .getCurrentWeatherData(getString(R.string.appKey), latitude.toString(), longtitude.toString())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Log.d("날씨 데이터", it.toString())
+            },{
+                it.printStackTrace()
+            })
+
 
     }
 
