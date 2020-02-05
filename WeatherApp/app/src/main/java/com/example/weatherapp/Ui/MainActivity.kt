@@ -14,43 +14,54 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.example.weatherapp.Core.NetworkCore
 import com.example.weatherapp.Core.WeatherAPI
+import com.example.weatherapp.Data.WeatherData
 import com.example.weatherapp.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
     var locationManager: LocationManager? = null
     private val REQUEST_CODE_LOCATION: Int = 2
     var currentLocation: String = ""
-    var latitude: Double? = null
-    var longtitude: Double? = null
-
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        btnGetData.setOnClickListener {  }
         getCurrentLoc()
         getWeather()
 
 
     }
 
-    fun getWeather(){
+    private fun setData(weatherData: WeatherData){
+        tvLocation.text = weatherData.weather.minutely[0].station.name
+        tvWeather.text = weatherData.weather.minutely[0].sky.name
+        tvCurTemp.text = weatherData.weather.minutely[0].temperature.tc
+        //etBackground(weatherData.)
+
+    }
+    private fun setBackground(weatherCode : String){
+
+    }
+
+    private fun getWeather(){
         NetworkCore.getNetworkCore<WeatherAPI>()
-            .getCurrentWeatherData(getString(R.string.appKey), latitude.toString(), longtitude.toString())
+           .getCurrentWeatherData(getString(R.string.appKey), latitude.toString(), longitude.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d("날씨 데이터", it.toString())
+                setData(it)
             },{
                 it.printStackTrace()
             })
-
-
     }
 
     private fun getCurrentLoc() {
@@ -58,14 +69,14 @@ class MainActivity : AppCompatActivity() {
         var userLocation: Location = getLatLng()
         if (userLocation != null) {
             latitude = userLocation.latitude
-            longtitude = userLocation.longitude
-            Log.d("CheckCurrentLocation", "현재 내 위치 값: $latitude, $longtitude")
+            longitude = userLocation.longitude
+            Log.d("CheckCurrentLocation", "현재 내 위치: $latitude, $longitude")
 
             var mGeocoder = Geocoder(applicationContext, Locale.KOREAN)
             var mResultList: List<Address>? = null
             try {
                 mResultList = mGeocoder.getFromLocation(
-                    latitude!!, longtitude!!, 1
+                    latitude!!, longitude!!, 1
                 )
             } catch (e: IOException) {
                 e.printStackTrace()
