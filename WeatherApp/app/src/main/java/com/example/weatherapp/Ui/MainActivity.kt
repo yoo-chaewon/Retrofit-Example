@@ -21,7 +21,6 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 import java.util.*
-import javax.xml.parsers.DocumentBuilder
 
 class MainActivity : AppCompatActivity() {
     var locationManager: LocationManager? = null

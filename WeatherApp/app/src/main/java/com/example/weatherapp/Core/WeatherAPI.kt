@@ -4,7 +4,6 @@ import com.example.weatherapp.Data.WeatherData
 import io.reactivex.Single
 import retrofit2.http.*
 
-
 interface WeatherAPI {
     @GET("/weather/current/minutely?")
     fun getCurrentWeatherData(
