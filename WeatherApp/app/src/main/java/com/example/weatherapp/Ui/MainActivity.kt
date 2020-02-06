@@ -21,6 +21,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 import java.util.*
+import javax.xml.parsers.DocumentBuilder
 
 class MainActivity : AppCompatActivity() {
     var locationManager: LocationManager? = null
@@ -45,7 +46,14 @@ class MainActivity : AppCompatActivity() {
         tvLocation.text = weatherData.weather.minutely[0].station.name
         tvWeather.text = weatherData.weather.minutely[0].sky.name
         tvCurTemp.text = weatherData.weather.minutely[0].temperature.tc
-        //etBackground(weatherData.)
+
+
+
+        var tmax: Double  = weatherData.weather.minutely[0].temperature.tmax.toDouble()
+        var tmin: Double  = weatherData.weather.minutely[0].temperature.tmin.toDouble()
+
+        tvMaxMinTemp.text = "최고 ${tmax.toInt()}° 최소 ${tmin.toInt()}°"
+        //setBackground(weatherData.)
 
     }
     private fun setBackground(weatherCode : String){
