@@ -35,11 +35,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        btnGetData.setOnClickListener {  }
+        btnGetData.setOnClickListener {
+            getCurrentLoc()
+            getWeather()
+        }
         getCurrentLoc()
         getWeather()
-
-
     }
 
     private fun setData(weatherData: WeatherData){
@@ -47,15 +48,12 @@ class MainActivity : AppCompatActivity() {
         tvWeather.text = weatherData.weather.minutely[0].sky.name
         tvCurTemp.text = weatherData.weather.minutely[0].temperature.tc
 
-
-
         var tmax: Double  = weatherData.weather.minutely[0].temperature.tmax.toDouble()
         var tmin: Double  = weatherData.weather.minutely[0].temperature.tmin.toDouble()
 
         tvMaxMinTemp.text = "최고 ${tmax.toInt()}° 최소 ${tmin.toInt()}°"
         setBackground(weatherData.weather.minutely[0].sky.code)
         setIcon(weatherData.weather.minutely[0].sky.code)
-
     }
     private fun setBackground(weatherCode : String){
         when(weatherCode){
