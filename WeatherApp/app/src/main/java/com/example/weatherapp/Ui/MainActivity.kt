@@ -66,11 +66,11 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
 
-            if (mResultList != null) {
-                Log.d("CheckCurrentLocation", mResultList[0].getAddressLine(0))
-                currentLocation = mResultList[0].getAddressLine(0)
-                currentLocation = currentLocation.substring(11)
-            }
+//            if (mResultList != null) {
+//                Log.d("CheckCurrentLocation", mResultList[0].getAddressLine(0))
+//                currentLocation = mResultList[0].getAddressLine(0)
+//                currentLocation = currentLocation.substring(11)
+//            }
 
         }
     }
