@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkCore {
     val api: Retrofit
-    val BASE_URL = "https://apis.openapi.sk.com"
+    val BASE_URL = ""
 
     init {
         var okHttpClient = OkHttpClient()

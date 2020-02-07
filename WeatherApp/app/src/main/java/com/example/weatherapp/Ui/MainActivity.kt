@@ -11,14 +11,8 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import com.example.weatherapp.Core.NetworkCore
-import com.example.weatherapp.Core.WeatherAPI
-import com.example.weatherapp.Data.WeatherData
 import com.example.weatherapp.R
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 import java.util.*
@@ -39,68 +33,19 @@ class MainActivity : AppCompatActivity() {
         getCurrentLoc()
     }
 
-    private fun setData(weatherData: WeatherData){
-        tvLocation.text = weatherData.weather.minutely[0].station.name
-        tvWeather.text = weatherData.weather.minutely[0].sky.name
-        tvCurTemp.text = weatherData.weather.minutely[0].temperature.tc
+    private fun setData(weatherData: Objects){
 
-        var tmax: Double  = weatherData.weather.minutely[0].temperature.tmax.toDouble()
-        var tmin: Double  = weatherData.weather.minutely[0].temperature.tmin.toDouble()
-
-        tvMaxMinTemp.text = "최고 ${tmax.toInt()}° 최소 ${tmin.toInt()}°"
-        setBackground(weatherData.weather.minutely[0].sky.code)
-        setIcon(weatherData.weather.minutely[0].sky.code)
     }
     private fun setBackground(weatherCode : String){
-        when(weatherCode){
-            "SKY_A01" -> mainView.setBackgroundResource(R.drawable.sky_a01)
-            "SKY_A02" -> mainView.setBackgroundResource(R.drawable.sky_a02)
-            "SKY_A03" -> mainView.setBackgroundResource(R.drawable.sky_a03)
-            "SKY_A04" -> mainView.setBackgroundResource(R.drawable.sky_a04)
-            "SKY_A05" -> mainView.setBackgroundResource(R.drawable.sky_a05)
-            "SKY_A06" -> mainView.setBackgroundResource(R.drawable.sky_a06)
-            "SKY_A07" -> mainView.setBackgroundResource(R.drawable.sky_a07)
-            "SKY_A08" -> mainView.setBackgroundResource(R.drawable.sky_a08)
-            "SKY_A09" -> mainView.setBackgroundResource(R.drawable.sky_a09)
-            "SKY_A10" -> mainView.setBackgroundResource(R.drawable.sky_a10)
-            "SKY_A11" -> mainView.setBackgroundResource(R.drawable.sky_a11)
-            "SKY_A12" -> mainView.setBackgroundResource(R.drawable.sky_a12)
-            "SKY_A13" -> mainView.setBackgroundResource(R.drawable.sky_a13)
-            "SKY_A14" -> mainView.setBackgroundResource(R.drawable.sky_a14)
-            else -> mainView.setBackgroundResource(R.drawable.sky_a14)
-        }
+
     }
 
     private fun setIcon(weatherCode: String){
-        when(weatherCode){
-            "SKY_A01" -> iconWeather.setBackgroundResource(R.drawable.ic_sun)
-            "SKY_A02" -> iconWeather.setBackgroundResource(R.drawable.ic_cloudy)
-            "SKY_A03" -> iconWeather.setBackgroundResource(R.drawable.ic_clouds)
-            "SKY_A04" -> iconWeather.setBackgroundResource(R.drawable.ic_rain_1)
-            "SKY_A05" -> iconWeather.setBackgroundResource(R.drawable.ic_hail)
-            "SKY_A06" -> iconWeather.setBackgroundResource(R.drawable.ic_hail)
-            "SKY_A07" -> iconWeather.setBackgroundResource(R.drawable.ic_clouds)
-            "SKY_A08" -> iconWeather.setBackgroundResource(R.drawable.ic_rain_1)
-            "SKY_A09" -> iconWeather.setBackgroundResource(R.drawable.ic_hail)
-            "SKY_A10" -> iconWeather.setBackgroundResource(R.drawable.ic_hail)
-            "SKY_A11" -> iconWeather.setBackgroundResource(R.drawable.ic_storm)
-            "SKY_A12" -> iconWeather.setBackgroundResource(R.drawable.ic_storm)
-            "SKY_A13" -> iconWeather.setBackgroundResource(R.drawable.ic_storm)
-            "SKY_A14" -> iconWeather.setBackgroundResource(R.drawable.ic_storm)
-            else -> iconWeather.setBackgroundResource(R.drawable.ic_sun)
-        }
+
     }
 
     private fun getWeather(latitude: String, longitude: String){
-        NetworkCore.getNetworkCore<WeatherAPI>()
-           .getCurrentWeatherData(getString(R.string.appKey), latitude, longitude)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                setData(it)
-            },{
-                it.printStackTrace()
-            })
+
     }
 
     private fun getCurrentLoc() {
@@ -126,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 currentLocation = mResultList[0].getAddressLine(0)
                 currentLocation = currentLocation.substring(11)
             }
-            getWeather(latitude.toString(), longitude.toString())
+
         }
     }
 
