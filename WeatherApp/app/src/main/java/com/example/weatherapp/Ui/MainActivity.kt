@@ -11,6 +11,7 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.weatherapp.Core.NetworkCore
 import com.example.weatherapp.Core.WeatherAPI
@@ -23,11 +24,8 @@ import java.io.IOException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    var locationManager: LocationManager? = null
     private val REQUEST_CODE_LOCATION: Int = 2
     var currentLocation: String = ""
-    private var latitude: Double? = null
-    private var longitude: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +33,10 @@ class MainActivity : AppCompatActivity() {
 
 
         btnGetData.setOnClickListener {
+            Log.d("click Refresh", "clicked")
             getCurrentLoc()
-            getWeather()
         }
         getCurrentLoc()
-        getWeather()
     }
 
     private fun setData(weatherData: WeatherData){
@@ -94,9 +91,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getWeather(){
+    private fun getWeather(latitude: String, longitude: String){
         NetworkCore.getNetworkCore<WeatherAPI>()
-           .getCurrentWeatherData(getString(R.string.appKey), latitude.toString(), longitude.toString())
+           .getCurrentWeatherData(getString(R.string.appKey), latitude, longitude)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -107,11 +104,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getCurrentLoc() {
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-        var userLocation: Location = getLatLng()
+        var locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        var userLocation: Location = getLatLng(locationManager)
         if (userLocation != null) {
-            latitude = userLocation.latitude
-            longitude = userLocation.longitude
+            var latitude: Double = userLocation.latitude
+            var longitude: Double = userLocation.longitude
             Log.d("CheckCurrentLocation", "현재 내 위치: $latitude, $longitude")
 
             var mGeocoder = Geocoder(applicationContext, Locale.KOREAN)
@@ -129,15 +126,16 @@ class MainActivity : AppCompatActivity() {
                 currentLocation = mResultList[0].getAddressLine(0)
                 currentLocation = currentLocation.substring(11)
             }
+            getWeather(latitude.toString(), longitude.toString())
         }
     }
 
-    private fun getLatLng(): Location {
+    private fun getLatLng(locationManager: LocationManager): Location {
         var currentLatLng: Location? = null
         if (ActivityCompat.checkSelfPermission(applicationContext, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(applicationContext, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), this.REQUEST_CODE_LOCATION)
-            getLatLng()
+            getLatLng(locationManager)
         }else{
             val locationProvider = LocationManager.GPS_PROVIDER
             currentLatLng = locationManager?.getLastKnownLocation(locationProvider)
