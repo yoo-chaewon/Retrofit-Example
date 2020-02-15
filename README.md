@@ -31,7 +31,6 @@
 - 결과
 
   <img src="/Study/image/screen1.png" width="20%" height="50%"></img>
-
   <img src="/Study/image/screen2.png" width="20%" height="50%"></img>
 
   
