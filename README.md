@@ -24,7 +24,7 @@
 
   > - retrofit_sample 브런치 clone
   > - https://openapi.sk.com 에서 Weather Planet 구매(무료) - > key 발급
-  > - 가이드 대로 코드 작성
+  > - Study/sample.md 참고
 
   
 
