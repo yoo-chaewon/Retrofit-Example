@@ -1,5 +1,11 @@
 # Sample
 
+### # 프로젝트를 클론 받는다
+
+- Retrofit_sample 브런치 이동
+
+
+
 ### # 날씨 API
 
 - 사용 API
@@ -8,11 +14,16 @@
 
   SK open API - Weather Plan 사용
 
-- API KEY 발급
+- API KEY 발급 - Project key 확인
+
+  > string.xml
+  >
+  > appkey에 자신의 project key 추가
 
 - https://openapi.sk.com/resource/apidoc/indexView 👉 API Document 활용
 
   - 이번 프로젝트에서 사용할 API: 현재날씨(분별)
+  - RequestURL / HTTP 
   - Request Parameters / Response Parameter 를 참고하여, 데이터를 가져오고, 필요한 것들만 파싱해서 사용.
 
 - **Postman** 을 활용하여, 실제 API를요청하고, 응답을 확인해보기
@@ -55,14 +66,22 @@ implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 ### # 배경색/ 아이콘 삽입
 
 - 아이콘 이미지 다운로드 : [https://www.flaticon.com](https://www.flaticon.com/)
+
 - 앱 아이콘 생성 : [https://appiconmaker.co](https://appiconmaker.co/)
+
 - 배경 그래디언트 : https://uigradients.com/#Atlas
+
+  > drawable 👉 배경 그래디언트(날씨 코드마다) - sky_a01
+  >
+  > drawable 👉 아이콘(날씨 코드마다) - ic_cloud
 
 
 
 ### # 현재 위치 찍어보기
 
 - Log.d로 현재 내 위치 찍어보기
+
+  > 에뮬레이터에서 현재 위치 변경할 수 있음.
 
 
 
