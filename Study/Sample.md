@@ -85,7 +85,11 @@ implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
 
 
+## ‼️‼️ 현재위치를 서버로 보내서 현재날씨 받아와야함
+
 ### # NetworkCore
+
+> BASE_URL = "" // 주소
 
 ```kotlin
 object NetworkCore {
@@ -109,9 +113,25 @@ object NetworkCore {
 }
 ```
 
-- baseURL 채우기
-
 
 
 ### # WeatherAPI
 
+```kotlin
+interface WeatherAPI {
+    @GET("/weather/current/minutely?")
+    fun getCurrentWeatherData(
+        @Query("appKey") app_id: String,
+        @Query("lat") lat: String,
+        @Query("lon") lon: String
+    ) : Single<WeatherData>
+}
+```
+
+
+
+### # Data Class 만들기
+
+json을 받아서 사용할 수 있는 객체를 위한 class만들기
+
+> Kotlin Data Class File from JSON
