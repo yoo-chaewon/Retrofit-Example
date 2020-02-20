@@ -12,11 +12,15 @@
 
   👉 네트워크로 부터 전달된 데이터를 우리 프로그램에서 필요한 형태의 객체로 받을 수 있다는 의미.
 
-- Http기반 REST API(GET, POST, PUT, DELETE)를 Retrofit2라이브러리를 통해 사용.
+- Http기반 **REST API**(GET, POST, PUT, DELETE)를 Retrofit2라이브러리를 통해 사용.
+
+  👉 서버와 클라이언트간 Http 통신을 위한 인터페이스
 
 - REST API의 표현식인 JSON을 Object개념으로 바꿔주는 GSON라이브러리를 함께 사용.
 
 - Retrofit은 기본적으로 OKHttp에 의존하고 있음.
+
+즉, 클라이언트에서 서버로 어떠한 요청을 보내면 서버는 그 요청에 대한 응답을 클라이언트로 보내주게 되는데, 이러한 과정들을 쉽게 사용할 수 있도록 도와주는 역할을 하는 것이 Retrofit
 
 
 
