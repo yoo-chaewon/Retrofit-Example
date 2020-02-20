@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getWeather(latitude: String, longitude: String){
+    private fun getWeather(){
 
     }
 
