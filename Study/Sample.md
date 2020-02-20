@@ -32,7 +32,7 @@
 
 
 
-### # Gradle(dependency) 추가
+### # Gradle(dependency)에 라이브러리 추가하기
 
 ```
 // ✔️레트로핏 라이브러리
@@ -52,6 +52,18 @@ implementation 'io.reactivex.rxjava2:rxjava:2.1.0'
 
 // rxjava와 안드로이드와 같이 병행할수 있게 도와주는 라이브러리 (안드로이드 스케줄러)
 implementation 'io.reactivex.rxjava2:rxandroid:2.0.1' 
+```
+
+
+
+### # 사용 권한 추가
+
+```xml
+//통신을 위한 인터넷 사용 권한
+<uses-permission android:name="android.permission.INTERNET"/>
+//위치 서비스 권한
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 ```
 
 
@@ -87,7 +99,7 @@ implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
 ## ‼️‼️ 현재위치를 서버로 보내서 현재날씨 받아와야함
 
-### # NetworkCore
+### # NetworkCore-Retrofit 객체 초기화
 
 > BASE_URL = "" // 주소
 
@@ -115,7 +127,9 @@ object NetworkCore {
 
 
 
-### # WeatherAPI
+### # WeatherAPI-인터페이스 정의
+
+> Http Method(GET, POST, PUT, DELETE 등)와 자원의 정보를 정의할 인터페이스 구현
 
 ```kotlin
 interface WeatherAPI {
@@ -135,3 +149,58 @@ interface WeatherAPI {
 json을 받아서 사용할 수 있는 객체를 위한 class만들기
 
 > Kotlin Data Class File from JSON
+>
+> https://lonepine.tistory.com/entry/Android-Studio-에서-JSON-Kotlin-Class-쉽게-만들기
+
+
+
+### # 통신 요청 및 응답 콜백 구현
+
+> Retrofit객체와 인터페이스를 연결하고 데이터 요청 보내기
+
+```kotlin
+private fun getWeather(latitude: String, longitude: String){
+  NetworkCore.getNetworkCore<WeatherAPI>()
+  .getCurrentWeatherData(getString(R.string.appKey), latitude, longitude)
+  .subscribeOn(Schedulers.io())
+  observeOn(AndroidSchedulers.mainThread())
+  .subscribe({//성공
+    setData(it)
+  },{//실패
+    it.printStackTrace()
+  })
+}
+```
+
+
+
+### # 데이터 화면에 출력
+
+```kotlin
+private fun setData(weatherData: WeatherData){
+  tvLocation.text = weatherData.weather.minutely[0].station.name
+  tvWeather.text = weatherData.weather.minutely[0].sky.name
+  tvCurTemp.text = weatherData.weather.minutely[0].temperature.tc
+
+  var tmax: Double  = weatherData.weather.minutely[0].temperature.tmax.toDouble()
+  var tmin: Double  = weatherData.weather.minutely[0].temperature.tmin.toDouble()
+
+  tvMaxMinTemp.text = "최고 ${tmax.toInt()}° 최소 ${tmin.toInt()}°"
+  setBackground(weatherData.weather.minutely[0].sky.code)
+  setIcon(weatherData.weather.minutely[0].sky.code)
+}
+private fun setBackground(weatherCode : String){
+  when(weatherCode){
+    "SKY_A01" -> mainView.setBackgroundResource(R.drawable.sky_a01)
+    else -> mainView.setBackgroundResource(R.drawable.sky_a14)
+  }
+}
+
+private fun setIcon(weatherCode: String){
+  when(weatherCode){
+    "SKY_A01" -> iconWeather.setBackgroundResource(R.drawable.ic_sun)
+    else -> iconWeather.setBackgroundResource(R.drawable.ic_sun)
+  }
+}
+```
+
