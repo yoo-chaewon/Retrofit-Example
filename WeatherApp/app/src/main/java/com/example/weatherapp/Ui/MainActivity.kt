@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     private fun setData(weatherData: WeatherData){
         tvLocation.text = weatherData.weather.minutely[0].station.name
         tvWeather.text = weatherData.weather.minutely[0].sky.name
-        tvCurTemp.text = weatherData.weather.minutely[0].temperature.tc
+        tvCurTemp.text = "${weatherData.weather.minutely[0].temperature.tc}°"
 
         var tmax: Double  = weatherData.weather.minutely[0].temperature.tmax.toDouble()
         var tmin: Double  = weatherData.weather.minutely[0].temperature.tmin.toDouble()
